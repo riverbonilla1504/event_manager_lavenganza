@@ -16,4 +16,8 @@ export class User {
   
   @Column()
   role: string; 
+
+  @Column({ default: false })
+  attendanceConfirmed: boolean;
+  
 }

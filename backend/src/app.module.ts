@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
@@ -11,23 +10,25 @@ import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root', 
-    password: '', 
-    database: 'event_manager_venganza',
-    entities: [User],
-    synchronize: true, 
-  }),
+      type: 'mysql', // Este sigue siendo 'mysql'
+      driver: require('mysql2'), // Asegúrate de que estás usando mysql2 como driver
+      host: 'autorack.proxy.rlwy.net',
+      port: 27197,
+      username: 'root',
+      password: 'RyjPhRrobXyHaOagxnFHIWOLAsKkwYFA',
+      database: 'railway',
+      entities: [User],
+      synchronize: true,
+    }),
     ConfigModule.forRoot({
-    isGlobal: true,
+      isGlobal: true,
     }),
     AuthModule, 
     UsersModule,
     MailModule
   ],
-  controllers: [AppController, UsersController ],
+  controllers: [ UsersController ],
   providers: [UsersModule],
 })
 export class AppModule {}
+

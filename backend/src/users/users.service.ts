@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -28,27 +28,33 @@ export class UsersService {
 
   async importUsers(file: Express.Multer.File) {
     console.log('Importing users...');
-    const workbook = XLSX.read(file.buffer, { type: 'buffer' });
-    const sheetname = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetname];
-    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-    const users = rows.slice(1).map((row) => ({
-      
+    try {
+      const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+      const sheetname = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetname];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  
+      const users = rows.slice(1).map((row) => ({
         username: row[0],
         password: row[1],
         email: row[2],
         role: "user",
-    }));
-
-    const savedUsers = [];
-    for (const userData of users){
-      const user = this.usersRepository.create(userData);
-      savedUsers.push(await this.usersRepository.save(user));
+        attendanceConfirmed: false,
+      }));
+  
+      const savedUsers = [];
+      for (const userData of users) {
+        const user = this.usersRepository.create(userData);
+        savedUsers.push(await this.usersRepository.save(user));
+      }
+  
+      return savedUsers;
+    } catch (error) {
+      console.error('Error importing users:', error);
+      throw new Error('Error importing users: ' + error.message);
     }
-
-    return savedUsers;
   }
+  
 
   async sendConfirmationCode(userId: number) {
     try {
@@ -63,5 +69,26 @@ export class UsersService {
       console.error('Error sending confirmation code:', error.message);
       throw new Error('Failed to send confirmation code');
     }
+  }
+
+  async confirmAttendance( idcode: number): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id: idcode } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    
+
+    if (user.attendanceConfirmed===true) {
+      // Si la asistencia ya fue confirmada, devolver nulo o un mensaje
+      
+      throw new Error('Attendance already confirmed');
+    }
+
+    // Marcar la asistencia como confirmada
+    user.attendanceConfirmed = true;
+    await this.usersRepository.save(user);
+
+    return user; // Devolver el usuario con la asistencia actualizada
   }
 }

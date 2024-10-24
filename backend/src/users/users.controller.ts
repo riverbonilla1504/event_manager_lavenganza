@@ -1,7 +1,8 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors, Param, Body} from '@nestjs/common';
+import { Controller, Get, Post, UploadedFile, UseInterceptors, Param, Query, NotFoundException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
 @Controller('users')
@@ -24,6 +25,14 @@ export class UsersController {
     @Param('id') userId: number,
   ): Promise<void> {
     await this.usersService.sendConfirmationCode(userId);
+  }
+
+  //@UseGuards(JwtAuthGuard)
+  @Get('confirm-attendance')
+  async confirmAttendance(
+    @Query('idcode') id: number,
+  ) {
+    return await this.usersService.confirmAttendance(id);
   }
 
 }

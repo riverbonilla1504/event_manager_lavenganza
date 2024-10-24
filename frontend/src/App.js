@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import ImportUsers from './components/ImportForm';
+import ConfirmAttendance from './components/ConfirmAttendance';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           </PrivateRoute>
         } 
         />
+        <Route path="/confirm" element={<ConfirmAttendance />} />
       </Routes>
     </Router>
   );
