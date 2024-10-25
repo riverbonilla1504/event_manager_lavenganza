@@ -1,44 +1,76 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Calendar, Users, Music } from 'lucide-react';
+import "../styles/Login.css";
 
-const Login = () => {
+export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:3001/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await response.json();
-    if (data.access_token) {
-      localStorage.setItem('token', data.access_token);
-      navigate('/dashboard');
-    } else {
-      alert('Login failed');
+    try {
+      const response = await fetch('http://localhost:3001/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      if (data.access_token) {
+        localStorage.setItem('token', data.access_token);
+        navigate('/dashboard');
+      } else {
+        alert('Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred during login');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className="login-container">
+      <div className="login-card">
+        <h1 className="login-title">Event Manager</h1>
+        <p className="login-description">Inicia sesión para gestionar tus eventos</p>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="username">Nombre de usuario</label>
+            <input 
+              id="username" 
+              type="text" 
+              placeholder="Tu nombre de usuario" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required 
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input 
+              id="password" 
+              type="password" 
+              placeholder="Tu contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
+          </div>
+          <button type="submit" className="login-button">
+            Iniciar sesión
+          </button>
+        </form>
+        <div className="login-footer">
+          <a href="#" className="login-link">¿Olvidaste tu contraseña?</a>
+          <a href="#" className="login-link">Crear cuenta</a>
+        </div>
+      </div>
+      <div className="login-icons">
+        <Calendar className="icon" />
+        <Users className="icon" />
+        <Music className="icon" />
+      </div>
+    </div>
   );
-};
-
-export default Login;
+}

@@ -1,76 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { ChevronDown, LogOut, Users, Upload, BarChart } from 'react-feather';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch('http://localhost:3001/users');
-      const data = await response.json();
-      setUsers(data);
-    };
-    fetchUsers();
-  }, []);
-
-  const handleCheckboxChange = (userId) => {
-    setSelectedUsers((prev) => {
-      if (prev.includes(userId)) {
-        return prev.filter((id) => id !== userId);
-      }
-      return [...prev, userId];
-    });
-  };
-
-  const sendConfirmationCodes = async () => {
-    for (const userId of selectedUsers) {
-      try {
-        const response = await fetch(`http://localhost:3001/users/${userId}/send-confirmation-code`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-  
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error(`Error sending code to user ${userId}:`, errorData);
-        }
-      } catch (error) {
-        console.error('Error sending confirmation code:', error);
-      }
+    // Redirigir a las estadísticas por defecto
+    if (location.pathname === '/dashboard') {
+      navigate('/dashboard/stats');
     }
-  
-    // Reiniciar la selección después de enviar
-    setSelectedUsers([]);
+  }, [location, navigate]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
-  
+
+  const isActive = (path) => location.pathname.startsWith(path);
 
   return (
     <div className="dashboard">
       <nav className="sidebar">
+        <div className="logo">Event Manager</div>
         <ul>
-          <li><Link to="/dashboard/import">Importar Usuarios</Link></li>
+          <li>
+            <Link to="/dashboard/users" className={`menu-item ${isActive('/dashboard/users') ? 'active' : ''}`}>
+              <Users size={18} />
+              <span>Usuarios</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/dashboard/import" className={`menu-item ${isActive('/dashboard/import') ? 'active' : ''}`}>
+              <Upload size={18} />
+              <span>Importar Usuarios</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/dashboard/stats" className={`menu-item ${isActive('/dashboard/stats') ? 'active' : ''}`}>
+              <BarChart size={18} />
+              <span>Estadísticas</span>
+            </Link>
+          </li>
         </ul>
       </nav>
       <div className="content">
-        <h2>Usuarios</h2>
-        <ul>
-          {users.map(user => (
-            <li key={user.id}>
-              <input
-                type="checkbox"
-                checked={selectedUsers.includes(user.id)}
-                onChange={() => handleCheckboxChange(user.id)}
-              />
-              {user.username}
-            </li>
-          ))}
-        </ul>
-        <button onClick={sendConfirmationCodes} disabled={selectedUsers.length === 0}>
-          Enviar Códigos QR
-        </button>
+        <header className="dashboard-header">
+          <h1>Panel de Administración</h1>
+          <div className="user-menu">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="user-menu-button">
+              Admin <ChevronDown size={16} />
+            </button>
+            {isMenuOpen && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut} className="sign-out-button">
+                  <LogOut size={16} />
+                  <span>Cerrar Sesión</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </header>
+        <main>
+          <Outlet />
+        </main>
       </div>
     </div>
   );

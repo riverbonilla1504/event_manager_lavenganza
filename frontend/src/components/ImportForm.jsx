@@ -1,39 +1,72 @@
 import React, { useState } from 'react';
+import { Upload } from 'react-feather';
+import '../styles/ImportForm.css';
 
 const ImportUsers = () => {
   const [file, setFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [message, setMessage] = useState('');
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+    setMessage('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!file) {
+      setMessage('Por favor, selecciona un archivo primero.');
+      return;
+    }
+
+    setIsUploading(true);
     const formData = new FormData();
     formData.append('file', file);
 
     try {
       const response = await fetch('http://localhost:3001/users/import', {
         method: 'POST',
-        body: formData, // Aquí envías el formData sin especificar manualmente el Content-Type
+        body: formData,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Users imported:', data);
+        setMessage(`Usuarios importados exitosamente: ${data.importedCount}`);
       } else {
-        console.error('Error importing users:', response.statusText);
+        setMessage('Error al importar usuarios: ' + response.statusText);
       }
     } catch (error) {
-      console.error('Error importing users:', error);
+      setMessage('Error al importar usuarios: ' + error.message);
+    } finally {
+      setIsUploading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" onChange={handleFileChange} />
-      <button type="submit">Importar Usuarios</button>
-    </form>
+    <div className="import-users">
+      <h2>Importar Usuarios</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="file-input-wrapper">
+          <input 
+            type="file" 
+            onChange={handleFileChange} 
+            id="file-upload" 
+            className="file-input"
+          />
+          <label htmlFor="file-upload" className="file-label">
+            <Upload size={20} />
+            <span>{file ? file.name : 'Seleccionar archivo'}</span>
+          </label>
+        </div>
+        <button type="submit" className="submit-button" disabled={isUploading}>
+          {isUploading ? 'Importando...' : 'Importar Usuarios'}
+        </button>
+      </form>
+      {message && <p className="message">{message}</p>}
+    </div>
   );
 };
 
