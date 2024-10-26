@@ -7,7 +7,8 @@ const SendConfirmationCode = ({ userId }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3001/users/${userId}/send-confirmation-code`, {
+      const apiUrl = process.env.URL_BACKEND || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/users/${userId}/send-confirmation-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

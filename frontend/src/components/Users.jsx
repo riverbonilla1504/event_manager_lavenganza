@@ -16,7 +16,8 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:3001/users', {
+        const apiUrl = process.env.URL_BACKEND || 'http://localhost:3001';
+        const response = await fetch(`${apiUrl}/users`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

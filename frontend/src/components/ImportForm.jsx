@@ -24,7 +24,8 @@ const ImportUsers = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:3001/users/import', {
+      const apiUrl = process.env.URL_BACKEND || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/users/import`, {
         method: 'POST',
         body: formData,
         headers: {
