@@ -62,6 +62,7 @@ export class UsersService {
       if (!user) {
         throw new Error('User not found');
       }
+      
       const qrCodeUrl = await QRCode.toDataURL("http://localhost:3000/confirm?idcode="+user.id);
       await this.mailService.sendEmail(user.email, qrCodeUrl);
     } catch (error) {
@@ -80,15 +81,13 @@ export class UsersService {
     
 
     if (user.attendanceConfirmed===true) {
-      // Si la asistencia ya fue confirmada, devolver nulo o un mensaje
       
       throw new Error('Attendance already confirmed');
     }
 
-    // Marcar la asistencia como confirmada
     user.attendanceConfirmed = true;
     await this.usersRepository.save(user);
 
-    return user; // Devolver el usuario con la asistencia actualizada
+    return user; 
   }
 }
