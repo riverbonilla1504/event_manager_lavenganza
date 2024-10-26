@@ -47,7 +47,7 @@ const ImportUsers = () => {
 
   return (
     <div className="import-users">
-      <h2>Importar Usuarios</h2>
+      <h2>Import Users</h2>
       <form onSubmit={handleSubmit}>
         <div className="file-input-wrapper">
           <input 

@@ -33,38 +33,34 @@ export default function Login() {
     <div className="login-container">
       <div className="login-card">
         <h1 className="login-title">Event Manager</h1>
-        <p className="login-description">Inicia sesión para gestionar tus eventos</p>
+        <p className="login-description">Sign in </p>
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="username">Nombre de usuario</label>
+            <label htmlFor="username">Username</label>
             <input 
               id="username" 
               type="text" 
-              placeholder="Tu nombre de usuario" 
+              placeholder="Your Username" 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required 
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">Password</label>
             <input 
               id="password" 
               type="password" 
-              placeholder="Tu contraseña"
+              placeholder="Your Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required 
             />
           </div>
           <button type="submit" className="login-button">
-            Iniciar sesión
+            Sign in
           </button>
         </form>
-        <div className="login-footer">
-          <a href="#" className="login-link">¿Olvidaste tu contraseña?</a>
-          <a href="#" className="login-link">Crear cuenta</a>
-        </div>
       </div>
       <div className="login-icons">
         <Calendar className="icon" />

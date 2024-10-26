@@ -17,7 +17,7 @@ const Stats = () => {
           }
         });
         if (!response.ok) {
-          throw new Error('Failed to fetch stats');
+          throw new Error('in progress feature'); 
         }
         const data = await response.json();
         setStats(data);
@@ -41,37 +41,20 @@ const Stats = () => {
 
   return (
     <div className="stats-container">
-      <h2>Estadísticas del Evento</h2>
+      <h2>Event Stats</h2>
       <div className="stats-grid">
         <div className="stat-card">
-          <h3>Total de Usuarios</h3>
+          <h3>Total Users</h3>
           <p className="stat-number">{stats.totalUsers}</p>
         </div>
         <div className="stat-card">
-          <h3>Usuarios Activos</h3>
+          <h3>Active Users</h3>
           <p className="stat-number">{stats.activeUsers}</p>
         </div>
         <div className="stat-card">
-          <h3>Eventos Creados</h3>
+          <h3>Events Created</h3>
           <p className="stat-number">{stats.eventsCreated}</p>
         </div>
-        <div className="stat-card">
-          <h3>Asistencia Promedio</h3>
-          <p className="stat-number">{stats.averageAttendance}</p>
-        </div>
-      </div>
-      <div className="chart-container">
-        <h3>Asistencia por Evento</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={stats.eventAttendance}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="attendance" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
       </div>
     </div>
   );

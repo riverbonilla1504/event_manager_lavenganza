@@ -10,8 +10,8 @@ import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql', // Este sigue siendo 'mysql'
-      driver: require('mysql2'), // Asegúrate de que estás usando mysql2 como driver
+      type: 'mysql', 
+      driver: require('mysql2'), 
       host: 'autorack.proxy.rlwy.net',
       port: 27197,
       username: 'root',

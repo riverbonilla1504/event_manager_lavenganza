@@ -56,7 +56,7 @@ const Users = () => {
       }
     }
   
-    // Reiniciar la selección después de enviar
+
     setSelectedUsers([]);
   };
 
@@ -119,12 +119,12 @@ const Users = () => {
         }
       }
     
-      // Reiniciar la selección después de enviar
+      
       setSelectedUsers([]);
   };
 
   if (loading) {
-    return <div className="loading">Cargando usuarios...</div>;
+    return <div className="loading">Loading Users...</div>;
   }
 
   if (error) {
@@ -133,7 +133,7 @@ const Users = () => {
 
   return (
     <div className="users-container">
-      <h2>Gestión de Usuarios</h2>
+      <h2>Users administration</h2>
       <div className="search-bar">
         <Search size={20} />
         <input
@@ -145,7 +145,7 @@ const Users = () => {
       </div>
       <div className="range-selector">
         <label>
-          Rango de IDs:
+          Range of IDs:
           <input
             type="number"
             value={rangeStart}
@@ -171,10 +171,10 @@ const Users = () => {
                 checked={selectedUsers.length === currentUsers.length}
               />
             </th>
-            <th>Nombre</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Rol</th>
-            <th>Acciones</th>
+            <th>Role</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -225,7 +225,7 @@ const Users = () => {
         className="send-qr-btn"
       >
         <Mail size={16} />
-        Enviar Códigos QR ({selectedUsers.length})
+        Send QR Codes ({selectedUsers.length})
       </button>
     </div>
   );

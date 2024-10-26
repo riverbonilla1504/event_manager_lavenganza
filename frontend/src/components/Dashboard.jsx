@@ -9,7 +9,6 @@ const Dashboard = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Redirigir a las estadísticas por defecto
     if (location.pathname === '/dashboard') {
       navigate('/dashboard/stats');
     }
@@ -30,26 +29,26 @@ const Dashboard = () => {
           <li>
             <Link to="/dashboard/users" className={`menu-item ${isActive('/dashboard/users') ? 'active' : ''}`}>
               <Users size={18} />
-              <span>Usuarios</span>
+              <span>Users</span>
             </Link>
           </li>
           <li>
             <Link to="/dashboard/import" className={`menu-item ${isActive('/dashboard/import') ? 'active' : ''}`}>
               <Upload size={18} />
-              <span>Importar Usuarios</span>
+              <span>Import Users</span>
             </Link>
           </li>
           <li>
             <Link to="/dashboard/stats" className={`menu-item ${isActive('/dashboard/stats') ? 'active' : ''}`}>
               <BarChart size={18} />
-              <span>Estadísticas</span>
+              <span>Stats</span>
             </Link>
           </li>
         </ul>
       </nav>
       <div className="content">
         <header className="dashboard-header">
-          <h1>Panel de Administración</h1>
+          <h1>Admin Dashboard</h1>
           <div className="user-menu">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="user-menu-button">
               Admin <ChevronDown size={16} />
@@ -58,7 +57,7 @@ const Dashboard = () => {
               <div className="dropdown-menu">
                 <button onClick={handleSignOut} className="sign-out-button">
                   <LogOut size={16} />
-                  <span>Cerrar Sesión</span>
+                  <span>Sign Out</span>
                 </button>
               </div>
             )}

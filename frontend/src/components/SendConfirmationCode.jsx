@@ -29,7 +29,7 @@ const SendConfirmationCode = ({ userId }) => {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Código de Confirmación:
+        Confirm Code
         <input
           type="text"
           value={code}
@@ -37,7 +37,7 @@ const SendConfirmationCode = ({ userId }) => {
           required
         />
       </label>
-      <button type="submit">Enviar Código</button>
+      <button type="submit">Send Code</button>
     </form>
   );
 };
