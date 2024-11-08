@@ -12,10 +12,10 @@ import { MailModule } from './mail/mail.module';
     TypeOrmModule.forRoot({
       type: 'mysql', 
       driver: require('mysql2'), 
-      host: 'autorack.proxy.rlwy.net',
-      port: 27197,
+      host: 'junction.proxy.rlwy.net',
+      port: 34172,
       username: 'root',
-      password: 'RyjPhRrobXyHaOagxnFHIWOLAsKkwYFA',
+      password: 'LXvReEHjcbalTzqhAmLWKQzIjjgWsyEV',
       database: 'railway',
       entities: [User],
       synchronize: true,

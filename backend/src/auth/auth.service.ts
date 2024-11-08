@@ -32,7 +32,7 @@ export class AuthService {
       };
     } catch (error) {
       console.error('Error generating token:', error);
-      throw new Error('Unable to generate token'); // O una excepción personalizada
+      throw new Error('Unable to generate token');
     }
   }
 }
