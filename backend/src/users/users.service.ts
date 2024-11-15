@@ -66,7 +66,7 @@ export class UsersService {
         throw new Error('User not found');
       }
 
-      const qrCodeUrl = await QRCode.toDataURL(`http://localhost:3000/confirm-attendance?idcode=${user.id}`);
+      const qrCodeUrl = await QRCode.toDataURL(`https://orange-ground-0068e7f1e.5.azurestaticapps.net/confirm-attendance?idcode=${user.id}`);
       const imagePath = await this.generateBadgeImage(user, qrCodeUrl);
 
       await this.mailService.sendEmail(user.email, imagePath);
