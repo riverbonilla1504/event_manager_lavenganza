@@ -9,15 +9,15 @@ export class User {
   username: string;
 
   @Column()
-  password: string;
-
-  @Column()
   email: string;
-  
-  @Column()
-  role: string; 
 
   @Column({ default: false })
-  attendanceConfirmed: boolean;
+  attendanceConfirmed1: boolean;
+
+  @Column({ default: false })
+  attendanceConfirmed2: boolean;
+
+  @Column({ default: false })
+  attendanceConfirmed3: boolean;
   
 }

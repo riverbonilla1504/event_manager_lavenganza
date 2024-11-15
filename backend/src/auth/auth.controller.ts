@@ -8,15 +8,19 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() body: any) {
-    const user = await this.authService.validateUser(body.username, body.password);
-    if (!user) {
+    if (body.username === 'admin123*' && body.password === 'admin') {
+      return this.authService.login();
+    }
+    else {
       return { message: 'Invalid credentials' };
     }
-    return this.authService.login(user);
-  }
-  @UseGuards(JwtAuthGuard)
-  @Post('protected-route')
-  getProtectedData(@Req() req) {
-    return { message: 'This is a protected route', user: req.user };
-  }
+     
+//    const user = await this.authService.validateUser(body.username, body.password);
+//    if (!user) {
+//      return { message: 'Invalid credentials' };
+//    }
+//    return this.authService.login(user);
+  
+}
+
 }

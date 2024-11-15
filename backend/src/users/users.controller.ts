@@ -24,6 +24,7 @@ export class UsersController {
   async sendConfirmationCode(
     @Param('id') userId: number,
   ): Promise<void> {
+    console.log(process.env.EMAIL);
     await this.usersService.sendConfirmationCode(userId);
   }
 
@@ -31,8 +32,13 @@ export class UsersController {
   @Get('confirm-attendance')
   async confirmAttendance(
     @Query('idcode') id: number,
+    @Query('attendanceNumber') attendanceNumber: string
   ) {
-    return await this.usersService.confirmAttendance(id);
+    const attendanceNum = Number(attendanceNumber); 
+    if (isNaN(attendanceNum)) {
+      throw new Error('attendanceNumber debe ser un número válido');
+    }
+    return await this.usersService.confirmAttendance(id, attendanceNum);
   }
 
 }

@@ -7,7 +7,7 @@ import { User } from './users/user.entity';
 import { UsersController } from './users/users.controller';
 import { MailModule } from './mail/mail.module';
 
-@Module({
+@Module({ 
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql', 
